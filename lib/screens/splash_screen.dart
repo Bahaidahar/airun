@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:airun_flutter/screens/main_screen.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:vibration/vibration.dart';
-// Import your next page here
+import 'package:flutter_tts/flutter_tts.dart'; // Импортируйте flutter_tts
+import 'package:airun_flutter/screens/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,6 +16,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   double _opacity = 0.0;
   final AudioPlayer _audioPlayer = AudioPlayer();
+  final FlutterTts _flutterTts = FlutterTts(); // Создаем экземпляр FlutterTts
 
   @override
   void initState() {
@@ -27,9 +28,12 @@ class _SplashScreenState extends State<SplashScreen> {
     // Вибрация, если доступна
     Vibration.hasVibrator().then((bool? hasVibrator) {
       if (hasVibrator ?? false) {
-        Vibration.vibrate(duration: 500); // Вибрация длительностью 500 мс
+        Vibration.vibrate(duration: 500); // Вибрация длительностью 500мс
       }
     });
+
+    // Текстовое сообщение на русском языке
+    _flutterTts.speak('Eye See'); // Произнесем текст
 
     // Запуск анимации
     Timer(const Duration(seconds: 1), () {
@@ -41,9 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Timer(const Duration(seconds: 2), () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  const MainScreen()), // Замените на ваш целевой экран
+          MaterialPageRoute(builder: (context) => const MainScreen()),
         );
       });
     });
@@ -52,6 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void dispose() {
     _audioPlayer.dispose(); // Освобождение ресурсов
+    _flutterTts.stop(); // Останавливаем TTS, если оно было запущено
     super.dispose();
   }
 
@@ -75,9 +78,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                  child: Container(
-                    color: Colors.transparent,
-                  ),
+                  child: Container(color: Colors.transparent),
                 ),
               ),
             ),
@@ -94,9 +95,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                  child: Container(
-                    color: Colors.transparent,
-                  ),
+                  child: Container(color: Colors.transparent),
                 ),
               ),
             ),
@@ -116,7 +115,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Image.asset(
                     'assets/logo.png', // Путь к изображению
                     width: 100, // Ширина изображения
-                    height: 100,
+                    height: 100, // Высота изображения
                   ),
                 ),
               ),

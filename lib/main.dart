@@ -7,6 +7,7 @@ Future<void> main() async {
 
   runApp(
     MaterialApp(
+      title: 'Eye See',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       home: const SplashScreen(),
